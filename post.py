@@ -1,5 +1,6 @@
 import urllib
 import requests
+import numpy as np
 #my_info contains file contain user access token
 from my_info import app_access_token,base_url
 from termcolor import colored
@@ -48,3 +49,43 @@ def get_user_post():
         # if user enter wrong user name which does not exist
         print colored("User not found", 'red')
         exit()
+
+def recent_like():
+    request_url = (base_url + 'users/self/media/liked?access_token=%s') % (app_access_token)
+    own_media = requests.get(request_url).json()
+    if own_media['meta']['code'] == 200:
+        if len(own_media['data']):
+            print colored("\nSome recent post liked by you:", 'green')
+            for ele in own_media['data']:
+                print "Username: " + colored(ele['user']['username'], "yellow")
+                print "post's url: " + ele['images']["standard_resolution"]["url"]
+
+        else:
+            print 'you never liked any post'
+            exit()
+    else:
+        # if access token is wrong an error message gets printed
+        print colored(own_media['meta']['error_message'], 'red')
+        exit()
+
+
+def least_like():
+    request_url = (base_url + 'users/self/media/recent/?access_token=%s') % (app_access_token)
+    own_media = requests.get(request_url).json()
+    if own_media['meta']['code'] == 200:
+        if len(own_media['data']):
+            print colored("\nPost that is least liked by others:",'yellow')
+            lst = []
+            for ele in own_media['data']:
+                lst.append(ele['likes']["count"])
+            index = np.argmin(lst)
+            print "post's url: " + own_media['data'][index]['images']["standard_resolution"]["url"]
+            print "likes: %d"%(min(lst))
+        else:
+            print 'No post found having least likes'
+            exit()
+    else:
+        # if access token is wrong an error message gets printed
+        print colored(own_media['meta']['error_message'], 'red')
+        exit()
+
