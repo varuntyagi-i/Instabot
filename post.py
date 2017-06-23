@@ -5,6 +5,7 @@ import numpy as np
 from my_info import app_access_token,base_url
 from termcolor import colored
 from UserId import friend_id
+from MediaId import get_media_id
 
 def get_own_post():
     request_url = (base_url + 'users/self/media/recent/?access_token=%s') % (app_access_token)
@@ -87,5 +88,52 @@ def least_like():
     else:
         # if access token is wrong an error message gets printed
         print colored(own_media['meta']['error_message'], 'red')
+        exit()
+
+
+def like_a_post():
+    user_id = friend_id()
+    media_id = get_media_id(user_id)
+    request_url = (base_url + 'media/%s/likes') % (media_id)
+    payload = {"access_token": app_access_token}
+    print 'POST request url is : %s' % (request_url)
+    post_a_like = requests.post(request_url, payload).json()
+    if post_a_like['meta']['code'] == 200:
+        print colored('Like was successful!','green')
+    else:
+        print 'Your like was unsuccessful. Try again!'
+
+def post_a_comment():
+        user_id = friend_id()
+        media_id = get_media_id(user_id)
+        comment_text = raw_input("Your comment: ")
+        payload = {"access_token": app_access_token, "text": comment_text}
+        request_url = (base_url + 'media/%s/comments') % (media_id)
+        print 'POST request url : %s' % (request_url)
+        make_comment = requests.post(request_url, payload).json()
+        if make_comment['meta']['code'] == 200:
+            print colored("Successfully added a new comment!","green")
+        else:
+            print colored("Unable to add comment. Try again!","red")
+
+def get_list_of_comment():
+    user_id = friend_id()
+    media_id = get_media_id(user_id)
+    request_url = (base_url + 'media/' + media_id + '/comments?access_token=%s') % (app_access_token)
+    comment_list = requests.get(request_url).json()
+    if comment_list['meta']['code'] == 200:
+        if len(comment_list['data']):
+            print colored("\nSome recent comments are", 'green')
+            count = 0
+            for ele in comment_list['data']:
+                count += 1
+                print "%d.\n comment: "%(count) + colored(ele['text'], "green")
+                print " user name: " + colored(ele['from']["username"],"yellow")
+        else:
+            print colored('no comment on this post till now','green')
+            exit()
+    else:
+        # if access token is wrong an error message gets printed
+        print colored(comment_list['meta']['error_message'], 'red')
         exit()
 
