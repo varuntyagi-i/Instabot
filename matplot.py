@@ -12,34 +12,41 @@ def interest():
     user_id = friend_id()
     if user_id:
         request_url = (base_url + 'users/' + user_id +'/media/recent/?access_token=%s') % (app_access_token)
-        caption = requests.get(request_url).json()
-        if caption['meta']['code'] == 200:
-            if len(caption['data']):
-                print colored("\nSome recent post with cation: ", 'green')
+        hashtag = requests.get(request_url).json()
+        if hashtag['meta']['code'] == 200:
+            if len(hashtag['data']):
+                print colored("\nSome recent post with hashtags: ", 'green')
                 count = 0
-                caption_list = []
-                for ele in caption['data']:
+                tags_list = []
+                for ele in hashtag['data']:
                     count += 1
-                    if ele['caption'] == None:
-                        print '%d\n '%(count) + colored('no caption','yellow')
-                        caption_list.append('post with no caption')
+                    if ele['tags'] == []:
+                        print '\n%d\n '%(count) + colored('no hashtag','yellow')
+                        #tags_list.append('')
                     else:
-                        print "%d.\n caption: " % (count) + colored(ele['caption']['text'], "green")
-                        caption_list.append(ele['caption']['text'])
+                        print "\n%d"%(count)
+                        for tag in range(0,len(ele['tags'])):
+                            print "tags: " + colored(ele['tags'][tag], "green")
+                            tags_list.append(ele['tags'][tag])
 
                     print " post url: " + colored(ele['images']['standard_resolution']['url'], "yellow")
 
-#display all values with there frequency in list and store it in counts(i.e. dictionary)
-                counts = Counter(caption_list)
-#use to plot graph on the basis of hashtag analysis of user
-                wordcloud = WordCloud().generate_from_frequencies(counts)
-                plt.imshow(wordcloud,interpolation='bilinear')
-                plt.axis("off")
-                plt.show()
-#print the frequecy of each hashtag
-                print '\n'
-                for ele in counts:
-                    print "%s : %d"%(ele,counts[ele])
+                if len(tags_list) > 0:
+                    # display all values with there frequency in list and store it in counts(i.e. dictionary)
+                    counts = Counter(tags_list)
+                    # use to plot graph on the basis of hashtag analysis of user
+                    wordcloud = WordCloud().generate_from_frequencies(counts)
+                    plt.imshow(wordcloud, interpolation='bilinear')
+                    plt.axis("off")
+                    plt.show()
+
+                    # print the frequecy of each hashtag
+                    print '\n'
+                    for ele in counts:
+                        print "%s : %d" % (ele, counts[ele])
+
+                else:
+                    print colored("no hashtag on user's post",'red')
 
                 """
                 caption_list_count = []
@@ -54,12 +61,13 @@ def interest():
                 plt.xticks(x+1,caption_list)
                 plt.plot([1, 2, 3], [1, 2, 3])
                 """
+
             else:
                 print colored('no post till now: ', 'yellow')
                 exit()
         else:
             # if access token is wrong an error message gets printed
-            print colored(caption['meta']['error_message'], 'red')
+            print colored(hashtag['meta']['error_message'], 'red')
             exit()
     else:
         print colored("User not found", 'red')
