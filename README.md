@@ -1,0 +1,1 @@
+A terminal bot app built using python. It also allows you to download posts from Instagram and remove negative comments. The app is intended to be used where you need to filter posts and comments on a large scale, hence making it difficult to do it manually using the official app
