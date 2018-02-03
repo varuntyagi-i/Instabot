@@ -16,7 +16,7 @@ def delete_negative_comment():
 
         if comment_info['meta']['code'] == 200:
             if len(comment_info['data']):
-                print colored("\nSome recent comments with sentiment analysis", 'green')
+                print colored("\nSome recent comments with sentiment analysis", 'yellow')
                 count = 0
                 for ele in comment_info['data']:
                     count += 1
@@ -25,8 +25,7 @@ def delete_negative_comment():
                     print blob.sentiment
                     if (blob.sentiment.p_neg > blob.sentiment.p_pos):
                         print colored("Negative comment", "red")
-                        delete_url = (base_url + 'media/%s/comments/%s/?access_token=%s') % (
-                        media_id, ele['id'], app_access_token)
+                        delete_url = (base_url + 'media/%s/comments/%s/?access_token=%s') % (media_id, ele['id'], app_access_token)
                         print colored('DELETE request url :','red')
                         print ("%s\n" % (delete_url))
                         delete_info = requests.delete(delete_url).json()

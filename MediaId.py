@@ -11,12 +11,12 @@ def get_media_id(user_id):
         if len(info["data"]):
             print colored("Select a post from the given post below","yellow")
             count = 0
-#displaying url of every post user posted till now.
+            #displaying url of every post user posted till now.
             for ele in info["data"]:
                 count += 1
                 print "%d. post's url: %s"%(count,ele["images"]["standard_resolution"]["url"])
             print colored("Enter url no: ","yellow")
-#to check whether user selects right option or not
+            #to check whether user selects right option or not
             while True:
                 value = int(raw_input())-1
                 if 0 <= value <= count-1:

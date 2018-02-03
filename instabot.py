@@ -9,9 +9,9 @@ def close():
 
 while True:
     print colored("\nEnter your choice from the given option:",'blue')
-    print "press:\n1.to get your instagram details\n2.to get your friend's instsgram details\n3.to download your most recent most\n" \
+    print "press:\n1.to get your instagram details\n2.to get your friend's instsgram details\n3.to download your most recent Post\n" \
           "4.to dowload your friend's most recent post\n5.Get to know about the post having least likes. \n6.Most recent post liked by me.\n" \
-          "7.to like friend's post\n8.get list of comment on a post\n9.to post a comment on someone's post\n10.to delete negative comments o" \
+          "7.to like friend's post\n8.get list of comment from a post\n9.to post a comment on someone's post\n10.to delete negative comments o" \
           "n a post \n11.to determine a user's interests and plot the same.\n12.Close the application"
 
     choice = int(raw_input())

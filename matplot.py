@@ -1,7 +1,7 @@
 from wordcloud import WordCloud
 
 import matplotlib.pyplot as plt
-import numpy as np
+# import numpy as np
 from collections import Counter
 from UserId import friend_id
 from my_info import base_url,app_access_token
@@ -32,7 +32,8 @@ def interest():
                     print " post url: " + colored(ele['images']['standard_resolution']['url'], "yellow")
 
                 if len(tags_list) > 0:
-                    # display all values with there frequency in list and store it in counts(i.e. dictionary)
+                    # contains all values with there frequency in tags_list list and store it in counts(dictionary)
+                    # note: return typr of Counter is dictionary
                     counts = Counter(tags_list)
                     # use to plot graph on the basis of hashtag analysis of user
                     wordcloud = WordCloud().generate_from_frequencies(counts)

@@ -1,7 +1,7 @@
 import requests
 from UserId import friend_id
 from termcolor import colored
-#my_info contains file contain user access token
+#my_info contains file that contain user access token
 from my_info import base_url,app_access_token
 
 def self_info():

@@ -100,9 +100,9 @@ def like_a_post():
         print 'POST request url is : %s' % (request_url)
         post_a_like = requests.post(request_url, payload).json()
         if post_a_like['meta']['code'] == 200:
-            print colored('Like was successful!', 'green')
+            print colored('Successful Done!', 'green')
         else:
-            print 'Your like was unsuccessful. Try again!'
+            print colored('Some Error. Try again!', 'yellow')
     else:
         print colored("Incorrect Username",'red')
 
